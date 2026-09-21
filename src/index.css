@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+@layer utilities {
+  .font-handwriting {
+    font-family: 'Caveat', cursive;
+  }
+  .font-certificate {
+    font-family: 'Cinzel', serif;
+  }
+  .font-vintage {
+    font-family: 'Lora', serif;
+  }
+  .font-cute {
+    font-family: 'Fredoka', 'Quicksand', sans-serif;
+  }
+}
+
+/* Custom candy cane postal border */
+.peppermint-border {
+  background: repeating-linear-gradient(
+    45deg,
+    #dc2626,
+    #dc2626 10px,
+    #ffffff 10px,
+    #ffffff 20px,
+    #15803d 20px,
+    #15803d 30px,
+    #ffffff 30px,
+    #ffffff 40px
+  );
+}
+
+/* Subtle parchment grain */
+.parchment-bg {
+  background-color: #fcf8ee;
+  background-image: radial-gradient(#ecdcb9 1px, transparent 1px), radial-gradient(#ecdcb9 1px, #fcf8ee 1px);
+  background-size: 40px 40px;
+  background-position: 0 0, 20px 20px;
+}
+
+/* Wax seal 3D effect */
+.wax-seal {
+  background: radial-gradient(circle at 35% 35%, #ef4444 0%, #b91c1c 55%, #7f1d1d 100%);
+  box-shadow: 0 4px 12px rgba(127, 29, 29, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.3), inset 0 -2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.gold-seal {
+  background: radial-gradient(circle at 35% 35%, #fde047 0%, #ca8a04 60%, #854d0e 100%);
+  box-shadow: 0 4px 12px rgba(161, 98, 7, 0.35), inset 0 2px 4px rgba(255, 255, 255, 0.4), inset 0 -2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Print-specific layout styling */
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  .printable-area {
+    box-shadow: none !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 20px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+

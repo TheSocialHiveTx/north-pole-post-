@@ -1,0 +1,6 @@
+{
+  "name": "The North Pole Post - Santa Letters & Official Nice List",
+  "description": "Adorable personalized Santa letters and official North Pole Nice List certificates with live parchment preview and keepsake packaging.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
