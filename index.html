@@ -1,21 +1,453 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>The North Pole Post - Santa Letters & Official Nice List</title>
-    <meta name="description" content="Adorable personalized Santa letters and official North Pole Nice List certificates with live parchment preview and keepsake packaging." />
-    <meta property="og:title" content="The North Pole Post - Santa Letters & Official Nice List" />
-    <meta property="og:description" content="Adorable personalized Santa letters and official North Pole Nice List certificates with live parchment preview and keepsake packaging." />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cinzel:wght@600;700;800&family=Fredoka:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
-  </head>
-  <body class="bg-amber-50/40 text-stone-800 antialiased selection:bg-rose-200 selection:text-rose-900 min-h-screen">
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The North Pole Post - Santa Letters &amp; Official Nice List</title>
+  <meta name="description" content="Adorable personalized Santa letters and official North Pole Nice List certificates with live parchment preview and keepsake packaging." />
+  <meta property="og:title" content="The North Pole Post - Santa Letters &amp; Official Nice List" />
+  <meta property="og:description" content="Adorable personalized Santa letters and official North Pole Nice List certificates with live parchment preview and keepsake packaging." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
 
+  <!-- Tailwind CSS via CDN (no build step) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['Lora', 'Georgia', 'serif'],
+            sans: ['ui-sans-serif', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- canvas-confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
+
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="min-h-screen text-stone-800" style="background-color:#faf7ef">
+
+  <!-- ── SNOW OVERLAY ── -->
+  <div id="snow-container" aria-hidden="true"></div>
+
+  <!-- ── ANNOUNCEMENT RIBBON ── -->
+  <div class="bg-red-800 text-amber-100 text-xs py-2 px-4 text-center font-medium flex items-center justify-center gap-2 border-b border-red-900/30">
+    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-amber-300"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></svg>
+    <span><strong>North Pole Dispatch Active:</strong> Orders placed today ship in authentic wax-sealed envelopes!</span>
+    <span class="hidden sm:inline text-red-300">•</span>
+    <span class="hidden sm:inline text-amber-200">Free shipping on orders over $20 🎁</span>
+  </div>
+
+  <!-- ── HEADER ── -->
+  <header id="main-header" class="bg-amber-50/95 backdrop-blur-md border-b border-amber-200/80 shadow-sm">
+    <div class="h-1.5 peppermint-border w-full"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
+
+      <!-- Logo -->
+      <div id="logo-home" class="flex items-center gap-3 cursor-pointer group">
+        <div class="w-11 h-11 rounded-2xl bg-red-700 text-white flex items-center justify-center shadow-md group-hover:scale-105 transition">
+          <span class="text-2xl">🎅</span>
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <span class="font-serif font-black text-xl tracking-tight text-red-950">The North Pole Post</span>
+            <span class="inline-block text-xs text-red-600">✦</span>
+          </div>
+          <p class="text-xs font-medium text-amber-900/80 tracking-wide uppercase" style="font-size:11px">Santa Letters &amp; Official Nice List</p>
+        </div>
+      </div>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-stone-700">
+        <button data-scroll-to="products-section" class="hover:text-red-700 transition cursor-pointer">Our Keepsakes</button>
+        <button data-scroll-to="customizer-section" class="hover:text-red-700 transition cursor-pointer flex items-center gap-1 text-red-800 font-semibold">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-amber-500"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></svg>
+          Live Preview Studio
+        </button>
+        <button data-scroll-to="how-it-works" class="hover:text-red-700 transition cursor-pointer">How It Works</button>
+        <button data-scroll-to="reviews-section" class="hover:text-red-700 transition cursor-pointer">Reviews</button>
+        <button data-scroll-to="faq-section" class="hover:text-red-700 transition cursor-pointer">FAQ</button>
+      </nav>
+
+      <!-- Controls -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <button id="bell-chime-btn" title="Ring festive jingle bells!" aria-label="Ring festive jingle bell"
+          class="w-9 h-9 rounded-full bg-white/80 hover:bg-amber-100 border border-amber-200 flex items-center justify-center text-amber-800 hover:text-red-700 transition cursor-pointer shadow-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+        </button>
+        <button id="snowfall-toggle-btn" aria-label="Toggle snow animation"
+          class="w-9 h-9 rounded-full border flex items-center justify-center transition cursor-pointer shadow-sm bg-sky-50 border-sky-300 text-sky-700">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="12" x2="22" y2="12"/><line x1="12" y1="2" x2="12" y2="22"/><path d="m20 16-4-4 4-4"/><path d="m4 8 4 4-4 4"/><path d="m16 4-4 4-4-4"/><path d="m8 20 4-4 4 4"/></svg>
+        </button>
+        <button id="open-cart-btn"
+          class="flex items-center gap-2 bg-red-700 hover:bg-red-800 text-white px-3.5 py-2 rounded-xl text-sm font-semibold shadow-md transition cursor-pointer active:scale-95">
+          <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="hidden sm:inline">Sleigh</span>
+          <span id="cart-badge" class="bg-white text-red-800 text-xs font-black w-5 h-5 rounded-full flex items-center justify-center">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1">
+
+    <!-- ── HERO ── -->
+    <section id="hero-section" class="relative pt-10 pb-16 sm:py-20 px-4 overflow-hidden">
+      <div class="max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+
+          <!-- Left: Headline -->
+          <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-100/80 border border-red-200 text-red-900 text-xs sm:text-sm font-semibold tracking-wide">
+              <span>❄️</span><span>Official Postal Station • Arctic Circle 99705</span>
+            </div>
+            <h1 class="font-serif text-3xl sm:text-5xl lg:text-6xl font-black text-stone-900 leading-tight tracking-tight">
+              Cherished Keepsakes from <span class="text-red-700 underline decoration-wavy decoration-amber-400 decoration-2">Santa's Workshop</span>
+            </h1>
+            <p class="text-base sm:text-lg text-stone-600 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+              Give your child the irreplaceable magic of holding a real handwritten-style letter from Santa Claus and an official North Pole Nice List diploma, sealed with authentic melted wax and postmarked from the Arctic Circle.
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 text-xs sm:text-sm text-stone-700">
+              <div class="flex items-center gap-2 justify-center lg:justify-start">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-600 shrink-0"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                <span>Real Red Wax Monogram</span>
+              </div>
+              <div class="flex items-center gap-2 justify-center lg:justify-start">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-600 shrink-0"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                <span>Personalized Good Deeds</span>
+              </div>
+              <div class="flex items-center gap-2 justify-center lg:justify-start">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-600 shrink-0"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                <span>Discreet Parent Outer Mailer</span>
+              </div>
+            </div>
+            <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+              <button id="hero-customize-btn"
+                class="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-red-700 hover:bg-red-800 text-white font-bold text-base shadow-lg transition cursor-pointer flex items-center justify-center gap-2 active:scale-95">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></svg>
+                <span>Customize Your Keepsake</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </button>
+              <button id="hero-explore-btn"
+                class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-white hover:bg-amber-50 border border-amber-300/80 text-stone-800 font-semibold text-base shadow-sm transition cursor-pointer">
+                View Letters &amp; Certificates
+              </button>
+            </div>
+          </div>
+
+          <!-- Right: Envelope visual -->
+          <div class="lg:col-span-5 flex justify-center">
+            <div class="relative w-full max-w-sm sm:max-w-md">
+              <!-- Back: certificate peek -->
+              <div class="absolute w-full h-full rounded-2xl bg-amber-100 border border-amber-300 p-6 shadow-md text-center" style="top:-16px;right:-16px;transform:rotate(4deg)">
+                <div class="font-certificate text-xs tracking-widest text-amber-900 font-bold uppercase">HIGH COUNCIL OF THE NORTH POLE</div>
+                <div class="font-serif text-lg font-bold text-amber-950 mt-1">Official Nice List Diploma</div>
+              </div>
+              <!-- Front: envelope -->
+              <div class="relative rounded-2xl border-2 border-amber-200/90 p-6 shadow-2xl" style="background:#fffdf7;transform:rotate(-1deg);transition:transform 0.3s" onmouseover="this.style.transform='rotate(0deg)'" onmouseout="this.style.transform='rotate(-1deg)'">
+                <div class="h-1 peppermint-border rounded-t mb-4"></div>
+                <div class="flex items-start justify-between">
+                  <div>
+                    <span class="font-serif font-bold text-red-900 uppercase block tracking-wider" style="font-size:11px">SANTA CLAUS</span>
+                    <span class="text-stone-500 font-serif block" style="font-size:10px">1 Elf Way • North Pole 99705</span>
+                  </div>
+                  <div class="w-12 h-14 border-2 border-dashed border-red-700/60 bg-red-50/50 rounded flex flex-col items-center justify-center text-center p-1">
+                    <span class="text-xs">🎄</span>
+                    <span class="font-mono font-bold text-red-800 uppercase" style="font-size:8px">POST 2026</span>
+                  </div>
+                </div>
+                <div class="my-8 text-center px-4">
+                  <span class="font-serif uppercase tracking-widest text-stone-400 block mb-1" style="font-size:11px">DELIVER VIA SPECIAL REINDEER AIR MAIL TO:</span>
+                  <div class="font-handwriting text-stone-800 font-bold tracking-wide" style="font-size:2rem">Master Lucas Miller</div>
+                  <div class="font-serif text-xs text-stone-600 mt-1">The Cozy Bedroom with the Star Nightlight</div>
+                  <div class="font-serif text-xs text-stone-700 font-semibold">Denver, Colorado</div>
+                </div>
+                <div class="pt-3 border-t border-amber-100 flex items-center justify-between">
+                  <div class="font-mono text-emerald-800 tracking-wider font-semibold uppercase" style="font-size:9px">★ SEALED AT THE ARCTIC CIRCLE</div>
+                  <div class="wax-seal w-12 h-12 rounded-full flex items-center justify-center text-white font-serif font-black shadow-md border border-red-900/30">
+                    <span class="text-lg">SC</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── TRUST BAR ── -->
+    <div class="bg-amber-100/60 border-y border-amber-200/80 py-4 px-4">
+      <div class="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 text-center text-xs font-medium text-stone-700">
+        <div class="flex items-center justify-center gap-2"><span class="text-lg">🕯️</span><span>Authentic Melted Red Wax Seals</span></div>
+        <div class="flex items-center justify-center gap-2"><span class="text-lg">📜</span><span>Heavy Linen Antique Parchment</span></div>
+        <div class="flex items-center justify-center gap-2"><span class="text-lg">🤫</span><span>100% Secret Parent Packaging</span></div>
+        <div class="flex items-center justify-center gap-2"><span class="text-lg">⚡</span><span>Instant Digital PDF Option</span></div>
+      </div>
+    </div>
+
+    <!-- ── PRODUCT CATALOG ── -->
+    <section id="products-section" class="py-14 sm:py-20 px-4 bg-amber-50/50">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center max-w-2xl mx-auto mb-12">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-100 text-red-900 text-xs font-semibold uppercase tracking-wider mb-2">
+            <span>🎁</span><span>Holiday 2026 Collection</span>
+          </div>
+          <h2 class="font-serif text-3xl sm:text-4xl font-black text-stone-900">Our Handcrafted Keepsakes</h2>
+          <p class="text-stone-600 mt-2 text-sm sm:text-base">Every piece is printed on heirloom archival parchment, hand-embossed with real wax or gold foil seals, and made with holiday love.</p>
+        </div>
+        <div id="products-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ── LIVE CUSTOMIZER ── -->
+    <section id="customizer-section" class="py-12 sm:py-16 px-4 max-w-7xl mx-auto">
+      <!-- Title -->
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-semibold uppercase tracking-wider mb-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-amber-600"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></svg>
+          Interactive North Pole Workshop
+        </div>
+        <h2 class="font-serif text-3xl sm:text-4xl font-bold text-stone-900">Customize &amp; Preview Your Keepsake</h2>
+        <p class="text-stone-600 mt-2 text-sm sm:text-base">Type in your child's details below and watch their official North Pole letter and Nice List certificate come to life in real time.</p>
+        <!-- Preset buttons -->
+        <div class="mt-5 flex flex-wrap items-center justify-center gap-2">
+          <span class="text-xs font-medium text-stone-500 flex items-center gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72"/><path d="m14 7 3 3"/><path d="M5 6v4"/><path d="M19 14v4"/><path d="M10 2v2"/><path d="M7 8H3"/><path d="M21 16h-4"/><path d="M11 3H9"/></svg>
+            Try quick examples:
+          </span>
+          <button data-preset="0" class="px-3 py-1 text-xs rounded-full border border-amber-300 bg-white/80 hover:bg-amber-50 hover:border-amber-400 text-stone-700 transition font-medium cursor-pointer shadow-sm">Emma (Age 7)</button>
+          <button data-preset="1" class="px-3 py-1 text-xs rounded-full border border-amber-300 bg-white/80 hover:bg-amber-50 hover:border-amber-400 text-stone-700 transition font-medium cursor-pointer shadow-sm">Lucas (Age 5)</button>
+          <button data-preset="2" class="px-3 py-1 text-xs rounded-full border border-amber-300 bg-white/80 hover:bg-amber-50 hover:border-amber-400 text-stone-700 transition font-medium cursor-pointer shadow-sm">Baby Maya</button>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="flex justify-center mb-8">
+        <div class="bg-amber-100/70 p-1.5 rounded-2xl flex gap-2 border border-amber-200">
+          <button id="tab-letter-btn" class="flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium text-sm transition-all cursor-pointer bg-red-700 text-white shadow-md font-semibold">
+            <span>🎅</span><span>Personalized Santa Letter</span>
+          </button>
+          <button id="tab-cert-btn" class="flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium text-sm transition-all cursor-pointer text-stone-700 hover:text-stone-900 hover:bg-white/60">
+            <span>📜</span><span>Official Nice List Certificate</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Grid: Form + Preview -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <!-- Left: Form -->
+        <div class="lg:col-span-5 bg-white/90 rounded-2xl border border-amber-200/80 p-6 shadow-sm">
+          <div class="flex items-center justify-between border-b border-amber-100 pb-3 mb-5">
+            <h3 id="customizer-form-title" class="font-serif font-bold text-lg text-stone-800">Personalize Santa's Letter</h3>
+            <span class="text-xs text-stone-400 font-mono">Live Sync</span>
+          </div>
+          <!-- Form fields injected here -->
+          <div id="customizer-form-fields"></div>
+
+          <!-- Format choice -->
+          <div class="mt-6 pt-4 border-t border-amber-100">
+            <label class="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-2">Choose Delivery Format:</label>
+            <div class="grid grid-cols-2 gap-2">
+              <button id="format-btn-printed-mail" type="button" class="p-2.5 rounded-xl border text-left transition cursor-pointer flex flex-col border-red-600 bg-red-50/70 text-red-950 font-semibold ring-1 ring-red-500">
+                <span class="text-xs flex items-center gap-1">📫 <strong>Physical Keepsake Mail</strong></span>
+                <span class="text-stone-500 mt-0.5" style="font-size:11px">Heavy parchment + real wax seal</span>
+                <span id="format-mail-price" class="text-xs font-bold text-red-700 mt-1">$12.95</span>
+              </button>
+              <button id="format-btn-digital-download" type="button" class="p-2.5 rounded-xl border text-left transition cursor-pointer flex flex-col border-stone-200 bg-white text-stone-600 hover:bg-stone-50">
+                <span class="text-xs flex items-center gap-1">⚡ <strong>Digital Print-at-Home</strong></span>
+                <span class="text-stone-500 mt-0.5" style="font-size:11px">High-Res 300 DPI PDF</span>
+                <span id="format-digital-price" class="text-xs font-bold text-red-700 mt-1">$8.95</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Action buttons -->
+          <div class="mt-6 flex flex-col sm:flex-row gap-3">
+            <button id="add-customized-cart-btn"
+              class="flex-1 flex items-center justify-center gap-2 bg-red-700 hover:bg-red-800 active:scale-[0.98] text-white py-3 px-5 rounded-xl font-bold text-sm shadow-md transition cursor-pointer">
+              <!-- Rendered by JS -->
+            </button>
+            <button id="print-sample-btn" title="Print high-res sample preview directly"
+              class="flex items-center justify-center gap-2 bg-amber-100 hover:bg-amber-200 text-amber-900 py-3 px-4 rounded-xl font-semibold text-sm transition cursor-pointer border border-amber-300/80">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+              <span>Print Preview</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: Preview -->
+        <div class="lg:col-span-7">
+          <div class="bg-amber-100/40 rounded-2xl p-4 sm:p-6 border border-amber-200/80">
+            <div class="flex items-center justify-between mb-4 px-2">
+              <span class="text-xs font-semibold uppercase tracking-wider text-amber-900 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                Live Keepsake Preview
+              </span>
+              <span class="text-stone-500 bg-white/70 px-2.5 py-0.5 rounded-full border border-amber-200" style="font-size:11px">100% Guaranteed Smile</span>
+            </div>
+            <div id="preview-container" class="overflow-x-auto py-2">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── HOW IT WORKS ── -->
+    <section id="how-it-works" class="py-16 sm:py-20 px-4 max-w-7xl mx-auto">
+      <div class="text-center max-w-2xl mx-auto mb-14">
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-900 text-xs font-semibold uppercase tracking-wider mb-2">
+          <span>✨</span><span>Simple 3-Step Magic</span>
+        </div>
+        <h2 class="font-serif text-3xl sm:text-4xl font-bold text-stone-900">How Santa's Post Office Works</h2>
+        <p class="text-stone-600 mt-2 text-sm sm:text-base">From our Arctic circle workshop to your cozy living room in three easy steps.</p>
+      </div>
+      <div id="how-it-works-steps" class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- ── REVIEWS ── -->
+    <section id="reviews-section" class="py-16 sm:py-20 px-4 bg-amber-100/40 border-y border-amber-200/60">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center max-w-2xl mx-auto mb-12">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-200/80 text-amber-950 text-xs font-semibold uppercase tracking-wider mb-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-700"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+            <span>Over 1,200+ Beaming Smiles</span>
+          </div>
+          <h2 class="font-serif text-3xl sm:text-4xl font-bold text-stone-900">Loved by Parents &amp; Believers</h2>
+          <p class="text-stone-600 mt-2 text-sm sm:text-base">Read heartwarming stories from families who brought Santa's letter to their mantelpiece.</p>
+        </div>
+        <div id="reviews-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FAQ ── -->
+    <section id="faq-section" class="py-16 sm:py-20 px-4 max-w-4xl mx-auto">
+      <div class="text-center max-w-xl mx-auto mb-12">
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-semibold uppercase tracking-wider mb-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-amber-700"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+          <span>Parent Questions Answered</span>
+        </div>
+        <h2 class="font-serif text-3xl sm:text-4xl font-bold text-stone-900">Frequently Asked Questions</h2>
+        <p class="text-stone-600 mt-2 text-sm">Everything you need to know about delivery, secret packaging, and personalization.</p>
+      </div>
+      <div id="faq-list" class="space-y-3">
+        <!-- Rendered by JS -->
+      </div>
+      <!-- Support box -->
+      <div class="mt-10 p-6 rounded-2xl bg-amber-50/80 border border-amber-200 text-center text-sm text-stone-700">
+        <p class="font-semibold text-stone-900 font-serif text-base mb-1">Have a special custom request or question?</p>
+        <p class="text-stone-600 text-xs sm:text-sm mb-3">Our chief elves at Santa's postal station are delighted to help with custom wording, twin packages, or special shipping.</p>
+        <a href="mailto:support@thesocialhivetx.com" class="inline-flex items-center gap-1.5 text-xs font-bold text-red-800 hover:text-red-950 underline decoration-red-300">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          Contact Santa's Elves (support@thesocialhivetx.com)
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── FOOTER ── -->
+  <footer class="bg-stone-900 text-stone-300 pt-16 pb-12 px-4 border-t-4 border-red-700">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-stone-800">
+        <!-- Brand -->
+        <div class="md:col-span-2 space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-red-700 text-white flex items-center justify-center text-xl shadow-md">🎅</div>
+            <span class="font-serif font-black text-2xl text-white tracking-tight">The North Pole Post</span>
+          </div>
+          <p class="text-stone-400 text-sm max-w-md leading-relaxed">Crafting personalized Santa Claus letters and official North Pole Nice List certificates that turn living rooms into scenes of pure childhood wonder.</p>
+          <div class="flex items-center gap-2 text-xs text-amber-300/90 font-medium">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-400"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg>
+            <span>Discreet Parent Packaging Guaranteed — Secrets Safe!</span>
+          </div>
+        </div>
+        <!-- Quick Nav -->
+        <div>
+          <h4 class="font-serif font-bold text-white text-sm uppercase tracking-wider mb-4">Explore Workshop</h4>
+          <ul class="space-y-2.5 text-xs sm:text-sm text-stone-400">
+            <li><button data-scroll-to="products-section" class="hover:text-amber-300 transition cursor-pointer">Personalized Letters &amp; Certificates</button></li>
+            <li><button data-scroll-to="customizer-section" class="hover:text-amber-300 transition cursor-pointer">Live Interactive Customizer</button></li>
+            <li><button data-scroll-to="how-it-works" class="hover:text-amber-300 transition cursor-pointer">How Delivery Works</button></li>
+            <li><button data-scroll-to="reviews-section" class="hover:text-amber-300 transition cursor-pointer">Parent Testimonials</button></li>
+            <li><button data-scroll-to="faq-section" class="hover:text-amber-300 transition cursor-pointer">Holiday FAQs</button></li>
+          </ul>
+        </div>
+        <!-- Contact -->
+        <div>
+          <h4 class="font-serif font-bold text-white text-sm uppercase tracking-wider mb-4">Elf Help Desk</h4>
+          <p class="text-stone-400 text-xs leading-relaxed mb-3">Questions about an order, custom wording, or expedited holiday delivery?</p>
+          <a href="mailto:support@thesocialhivetx.com" class="inline-flex items-center gap-2 text-xs text-amber-400 hover:text-amber-300 font-semibold">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            <span>support@thesocialhivetx.com</span>
+          </a>
+          <div class="mt-4 text-stone-500 font-mono" style="font-size:11px">Arctic Circle Station #02 • North Pole</div>
+        </div>
+      </div>
+      <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-stone-500">
+        <p>© <span id="footer-year"></span> The North Pole Post Co. All holiday magic reserved.</p>
+        <div class="flex items-center gap-1 text-stone-400">
+          <span>Made with</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-500"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+          <span>for little believers everywhere</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ── CART DRAWER ── -->
+  <div id="cart-drawer" class="fixed inset-0 z-50 overflow-hidden" role="dialog" aria-modal="true" style="display:none">
+    <div id="cart-backdrop" class="fixed inset-0 bg-stone-900/40 backdrop-blur-sm"></div>
+    <div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
+      <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col">
+        <!-- Drawer header -->
+        <div class="p-6 border-b border-amber-100 flex items-center justify-between bg-amber-50/60">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-full bg-red-700 text-white flex items-center justify-center text-sm shadow-sm">🛷</div>
+            <div>
+              <h3 class="font-serif font-bold text-lg text-stone-900 leading-none">Santa's Sleigh</h3>
+              <p class="text-stone-500 mt-0.5" style="font-size:11px">Items ready for the workshop</p>
+            </div>
+          </div>
+          <button id="cart-close-btn" class="p-2 rounded-full hover:bg-amber-100 text-stone-400 hover:text-stone-700 transition cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        <!-- Items -->
+        <div id="cart-items-list" class="flex-1 overflow-y-auto p-6 space-y-4"></div>
+        <!-- Footer totals -->
+        <div id="cart-footer"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CHECKOUT MODAL ── -->
+  <div id="checkout-modal" class="fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true" style="display:none">
+    <div id="checkout-backdrop" class="fixed inset-0 bg-stone-900/50 backdrop-blur-sm"></div>
+    <div class="flex min-h-screen items-center justify-center p-4">
+      <div class="relative w-full max-w-lg rounded-3xl bg-white p-6 sm:p-8 shadow-2xl border border-amber-200 z-10">
+        <button id="checkout-close-btn" class="absolute top-5 right-5 p-2 rounded-full hover:bg-stone-100 text-stone-400 hover:text-stone-700 transition cursor-pointer">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+        <div id="checkout-body"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── APP JS ── -->
+  <script src="js/app.js" defer></script>
+
+</body>
+</html>
